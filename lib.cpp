@@ -6,15 +6,11 @@ int factorial(int value)
   return (value == 1 || value == 0) ? 1 : factorial(value - 1) * value;
 }
 
-void printMap(std::map<int, int> dict)
+void printMap(std::map<int, int, std::less<int>, logging_allocator<std::pair<const int, int>>>& dict)
 {
-  std::cout << "---------------" << std::endl;
   // Iterate through the dictionary and print pairs <key, value>
-  auto it = dict.begin();
-  while (it != dict.end())
+  for(const auto& node: dict)
   {
-    std::cout << "<" << it->first << ", " << it->second << ">" << std::endl;
-    ++it;
+    std::cout << node.first << " " << node.second << std::endl;
   }
-  std::cout << "---------------" << std::endl;
 }
