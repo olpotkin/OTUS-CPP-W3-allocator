@@ -17,12 +17,14 @@ int main(int, char *[])
   }
 
   // 3. Define std::map instance with CUSTOM allocator
-  auto dict_custom = std::map<int, int, std::less<int>, logging_allocator<std::pair<const int, int>>>{};
+  auto dict_custom = std::map<int, int, std::less<int>, logging_allocator<std::pair<const int, int>, 10>>{};
 
   // 4. Insert 10 elements in std::map (allocated with CUSTOM allocator):
   // @key - values from 0 to 9
   // @value - factorial of key value
-  // TODO: Implement custom memory allocation for fixed number of map nodes
+  //
+  // Implement custom memory allocation for fixed number of map nodes
+  // https://en.cppreference.com/w/cpp/named_req/Allocator
   for (auto i = 0; i < 10; ++i)
   {
     dict_custom[i] = factorial(i);
@@ -31,7 +33,6 @@ int main(int, char *[])
 
   // 5. Print all elements from dict_custom
   printMap(dict_custom);
-
 
   return 0;
 }
