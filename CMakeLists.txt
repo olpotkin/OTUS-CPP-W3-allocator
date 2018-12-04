@@ -8,7 +8,7 @@ endif()
 
 configure_file(version.h.in ${PROJECT_SOURCE_DIR}/version.h)
 
-add_executable(allocator main.cpp lib.cpp lib.h)
+add_executable(allocator main.cpp lib/lib.cpp lib/lib.h lib/linked_list.h)
 
 set_target_properties(allocator PROPERTIES
         CXX_STANDARD 14

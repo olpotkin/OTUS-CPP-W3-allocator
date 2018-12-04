@@ -1,5 +1,5 @@
-#include "lib.h"
-#include <vector>
+#include "lib/lib.h"
+#include "lib/linked_list.h"
 
 
 int main(int, char *[])
@@ -33,6 +33,25 @@ int main(int, char *[])
 
   // 5. Print all elements from dict_custom
   printMap(dict_custom);
+
+  // 6. Define custom container (Linked list) with DEFAULT allocator
+  LinkedList<int, std::allocator<int>> list_default;
+  // 7. Insert 10 elements from 0 to 9
+  for (int i = 0; i < 10; ++i)
+  {
+    list_default.append(i);
+  }
+
+  // 8. Define custom container (Linked list) with CUSTOM allocator
+  LinkedList<int, logging_allocator<int, 10>> list_custom;
+  // 9. Insert 10 elements from 0 to 9
+  for (int i = 0; i < 10; ++i)
+  {
+    list_custom.append(i);
+  }
+
+  // Print all elements from list_custom
+  list_custom.print();
 
   return 0;
 }
