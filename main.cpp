@@ -2,8 +2,7 @@
 #include "lib/linked_list.h"
 
 
-int main(int, char *[])
-{
+int main(int, char *[]) {
   // 1. Define std::map instance with DEFAULT allocator
   // https://en.cppreference.com/w/cpp/container/map
   auto dict = std::map<int, int, std::less<int>, std::allocator<std::pair<const int, int>>>{};
@@ -11,9 +10,8 @@ int main(int, char *[])
   // 2. Insert 10 elements in std::map (allocated with DEFAULT allocator):
   // @key - values from 0 to 9
   // @value - factorial of key value
-  for (auto i = 0; i < 10; ++i)
-  {
-    dict[i] = factorial(i);
+  for (auto i = 0; i < 10; ++i) {
+    dict.emplace(std::pair<int, int>(i, factorial(i)));
   }
 
   // 3. Define std::map instance with CUSTOM allocator
@@ -25,9 +23,8 @@ int main(int, char *[])
   //
   // Implement custom memory allocation for fixed number of map nodes
   // https://en.cppreference.com/w/cpp/named_req/Allocator
-  for (auto i = 0; i < 10; ++i)
-  {
-    dict_custom[i] = factorial(i);
+  for (auto i = 0; i < 10; ++i) {
+    dict_custom.emplace(std::pair<int, int>(i, factorial(i)));
     std::cout << std::endl;
   }
 
@@ -37,21 +34,22 @@ int main(int, char *[])
   // 6. Define custom container (Linked list) with DEFAULT allocator
   LinkedList<int, std::allocator<int>> list_default;
   // 7. Insert 10 elements from 0 to 9
-  for (int i = 0; i < 10; ++i)
-  {
-    list_default.append(i);
+  for (int i = 0; i < 10; ++i) {
+    list_default.push_back(i);
   }
 
   // 8. Define custom container (Linked list) with CUSTOM allocator
   LinkedList<int, logging_allocator<int, 10>> list_custom;
   // 9. Insert 10 elements from 0 to 9
-  for (int i = 0; i < 10; ++i)
-  {
-    list_custom.append(i);
+  for (int i = 0; i < 10; ++i) {
+    list_custom.push_back(i);
   }
 
-  // Print all elements from list_custom
-  list_custom.print();
+  // 10. Print all elements from list_custom
+  for (auto it = list_custom.cbegin(), itF(list_custom.cend()); it != itF; ++it) {
+    std::cout << *it << " ";
+  }
+  std::cout << std::endl;
 
   return 0;
 }
