@@ -51,5 +51,21 @@ int main(int, char *[]) {
   }
   std::cout << std::endl;
 
+/*
+  // 11. Copy constructor check
+  auto list_cp = list_custom;
+  for (auto it = list_cp.cbegin(), itF(list_cp.cend()); it != itF; ++it) {
+    std::cout << *it << " ";
+  }
+  std::cout << std::endl;
+
+  // 12. Move constructor check
+  auto list_mv = std::move(list_cp);
+  for (auto it = list_mv.cbegin(), itF(list_mv.cend()); it != itF; ++it) {
+    std::cout << *it << " ";
+  }
+  std::cout << std::endl;
+*/
+
   return 0;
 }

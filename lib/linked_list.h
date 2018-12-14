@@ -67,10 +67,32 @@ template <typename T, typename _A = std::allocator<T>>
 class LinkedList {
 public:
   // Constructor
-  LinkedList(): head(nullptr), tail(nullptr), _alloc() {};
+  LinkedList(): head(nullptr), tail(nullptr), _alloc() {
+    std::cout << "LOG: LL ctor..." << std::endl;
+  };
+
+  // Copy Constructor
+  LinkedList(const LinkedList &src)
+    : head{ nullptr }, tail{ nullptr }, _alloc() {
+    std::cout << "LOG: LL COPY ctor..." << std::endl;
+    Node<T>* curNode = src.head;
+    while (curNode != nullptr) {
+      this->push_back(curNode->data);
+      curNode = curNode->next;
+    }
+  }
+
+  // Move Constructor
+  LinkedList(LinkedList &&src) {
+    std::cout << "LOG: LL MOVE ctor..." << std::endl;
+    this->head = src.head;
+    src.head = nullptr;
+  }
 
   // Destructor
   ~LinkedList() {
+    std::cout << "LOG: LL dtor..." << std::endl;
+    std::cout << "LOG: LL head (before destruct) = " << head << "..." << std::endl;
     auto current = head;
     while (current != nullptr) {
       auto p_rm = current;
