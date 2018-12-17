@@ -71,11 +71,26 @@ public:
     std::cout << "LOG: LL ctor..." << std::endl;
   };
 
-  // Copy Constructor
+  // Copy Constructor (with same allocator types)
   LinkedList(const LinkedList &src)
     : head(nullptr), tail(nullptr), _alloc() {
     std::cout << "LOG: LL COPY ctor..." << std::endl;
-    Node<T>* curNode = src.head;
+    copyList(src);
+  }
+
+  // Copy Constructor (with different allocator types)
+  template <typename TAlloc>
+  LinkedList(const LinkedList<T, TAlloc> &src)
+    : head(nullptr), tail(nullptr), _alloc() {
+    std::cout << "LOG: LL COPY ctor (diff allocs)..." << std::endl;
+    copyList(src);
+  }
+
+  // @method
+  // Helper for copying elements between Linked Lists
+  template <typename TAlloc>
+  void copyList(const LinkedList<T, TAlloc> &src) {
+    Node<T>* curNode = src.cbegin()._node;
     while (curNode != nullptr) {
       this->push_back(curNode->data);
       curNode = curNode->next;

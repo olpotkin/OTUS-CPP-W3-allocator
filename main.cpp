@@ -52,12 +52,20 @@ int main(int, char *[]) {
   std::cout << std::endl;
 
 /*
-  // TEST: Copy constructor
+  // TEST: Copy constructor (with same allocator types)
   auto list_cp = list_custom;
   for (auto it = list_cp.cbegin(), itF(list_cp.cend()); it != itF; ++it) {
     std::cout << *it << " ";
   }
   std::cout << std::endl;
+
+  // TEST: Copy constructor (with different allocator types)
+  LinkedList<int, logging_allocator<int, 10>> list_cp2 = list_default;
+  for (auto it = list_cp2.cbegin(), itF(list_cp2.cend()); it != itF; ++it) {
+    std::cout << *it << " ";
+  }
+  std::cout << std::endl;
+
 
   // TEST: Move constructor (with same allocator types)
   auto list_mv = std::move(list_custom);
