@@ -73,7 +73,7 @@ public:
 
   // Copy Constructor
   LinkedList(const LinkedList &src)
-    : head{ nullptr }, tail{ nullptr }, _alloc() {
+    : head(nullptr), tail(nullptr), _alloc() {
     std::cout << "LOG: LL COPY ctor..." << std::endl;
     Node<T>* curNode = src.head;
     while (curNode != nullptr) {
@@ -82,11 +82,31 @@ public:
     }
   }
 
-  // Move Constructor
-  LinkedList(LinkedList &&src) {
+  // Move Constructor (with same allocator types)
+  LinkedList(LinkedList &&src)
+    : head(src.head), tail(src.tail), _alloc(src._alloc) {
     std::cout << "LOG: LL MOVE ctor..." << std::endl;
-    this->head = src.head;
     src.head = nullptr;
+    src.tail = nullptr;
+  }
+
+  // Move Constructor (with different allocator types)
+  template <typename TAlloc>
+  LinkedList(LinkedList<T, TAlloc>&& src)
+    : head(nullptr), tail(nullptr), _alloc() {
+    std::cout << "LOG: LL MOVE ctor (diff allocs)..." << std::endl;
+    if (src.cbegin()._node != nullptr) {
+      this->head = _alloc.allocate(1);
+      _alloc.construct(head, std::move(*src.cbegin()._node));
+      auto p_dst = head;
+      auto p_src = src.cbegin()._node;
+      while (p_src->next != nullptr) {
+        p_dst->next = _alloc.allocate(1);
+        p_dst = p_dst->next;
+        p_src = p_src->next;
+        _alloc.construct(p_dst, std::move(*p_src));
+      }
+    }
   }
 
   // Destructor
@@ -101,8 +121,6 @@ public:
       _alloc.deallocate(p_rm, 1);
     }
   }
-
-  using Allocator = typename _A::template rebind< Node<T> >::other;
 
   Node<T>* constructNode(const T& value) {
     // Allocate memory for a new Node
@@ -143,6 +161,7 @@ public:
 private:
   Node<T>* head = nullptr;
   Node<T>* tail = nullptr;
+  using Allocator = typename _A::template rebind< Node<T> >::other;
   Allocator _alloc;
 };
 
