@@ -137,21 +137,16 @@ public:
     }
   }
 
-  Node<T>* constructNode(const T& value) {
-    // Allocate memory for a new Node
-    auto ptr = _alloc.allocate(1);
-    _alloc.construct(ptr);
-
-    // Set parameters for a new Node
-    ptr->data = value;
-    ptr->next = nullptr;
-
-    return ptr;
-  }
-
+  // @method
   // Append new Node in the end of the Linked List
   void push_back(const T& value) {
-    auto new_node = constructNode(value);
+    // Allocate memory for a new Node
+    auto new_node = _alloc.allocate(1);
+    _alloc.construct(new_node);
+
+    // Set parameters for a new Node
+    new_node->data = value;
+    new_node->next = nullptr;
 
     // If List is empty
     if (head == nullptr) {
