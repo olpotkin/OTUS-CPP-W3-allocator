@@ -4,15 +4,19 @@
 #include "lib.h"
 
 
+// @class
 // Element of the linked list
 template<typename T>
 struct Node {
   Node* next;
   T data;
-  Node() : next(nullptr), data(T()) {};
+  template<typename ...Args>
+  Node(Args &&...args) : next(nullptr), data(std::forward<Args>(args)...){}
 };
 
+// @class
 // Iterator for Linked List traversal (const specialization)
+// @links
 // https://en.cppreference.com/w/cpp/iterator/iterator_traits
 // http://labmaster.mi.infn.it/Laboratorio2/serale/www.sgi.com/tech/stl/ForwardIterator.html
 template <typename T>
@@ -62,6 +66,7 @@ struct ListIterator {
   }
 };
 
+// @class
 // Custom data structure - Linked List (single connection)
 template <typename T, typename _A = std::allocator<T>>
 class LinkedList {
@@ -138,15 +143,15 @@ public:
   }
 
   // @method
-  // Append new Node in the end of the Linked List
-  void push_back(const T& value) {
-    // Allocate memory for a new Node
-    auto new_node = _alloc.allocate(1);
-    _alloc.construct(new_node);
-
-    // Set parameters for a new Node
-    new_node->data = value;
-    new_node->next = nullptr;
+  // Append new Node in the end of the Linked List (perfect forwarding)
+  // @links
+  // https://eli.thegreenplace.net/2014/perfect-forwarding-and-universal-references-in-c
+  // https://stackoverflow.com/questions/6829241/perfect-forwarding-whats-it-all-about
+  template <typename ...Args>
+  void push_back(Args &&...args) {
+    // Allocate memory and construct a new Node
+    Node<T> *new_node = _alloc.allocate(1);
+    _alloc.construct(new_node, std::forward<Args>(args)...);
 
     // If List is empty
     if (head == nullptr) {
